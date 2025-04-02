@@ -1,0 +1,9 @@
+--13
+SELECT COUNT(*) as numero_dipendenti  --count serve per contare un numero di x 
+FROM dipendenti JOIN aziende ON dipendenti.partita_iva = aziende.partita_iva
+WHERE aziende.denominazione = 'Green Solutions';
+
+--14
+select min(reddito_anno_lordo ), max(reddito_anno_lordo )
+from dipendenti
+

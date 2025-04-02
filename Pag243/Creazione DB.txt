@@ -1,0 +1,149 @@
+CREATE TABLE dipendenti (
+   CF CHAR(16) PRIMARY KEY,
+   nome VARCHAR(60) NOT NULL, 
+   cognome VARCHAR(70) NOT NULL,  
+   data_nascita DATE NOT NULL,
+   professione VARCHAR(60) NOT NULL, 
+   numero_familiari SMALLINT NOT NULL,
+   totale_trattenute DECIMAL(10,2) NOT NULL,
+   reddito_anno_lordo DECIMAL(10,2) NOT NULL
+);
+
+CREATE TABLE aziende (
+   partita_iva CHAR(11) PRIMARY KEY,
+   denominazione VARCHAR(50) NOT NULL,
+   settore VARCHAR(150) NOT NULL,
+   indirizzo VARCHAR(100) NOT NULL,
+   citta VARCHAR(70) NOT NULL,
+   regione VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE versamenti (
+   codice CHAR(18) PRIMARY KEY, -
+   giorno_versamento TINYINT NOT NULL,
+   mese_versamento TINYINT NOT NULL, 
+   anno_versamento SMALLINT NOT NULL,
+   importo_versamento DECIMAL(10,2) NOT NULL
+);
+
+--chiavi secondarie
+ALTER TABLE dipendenti ADD partita_iva CHAR(11);
+
+ALTER TABLE dipendenti 
+ADD FOREIGN KEY(partita_iva) REFERENCES aziende(partita_iva);
+
+ALTER TABLE versamenti ADD partita_iva CHAR(11);
+
+
+ALTER TABLE versamenti 
+ADD FOREIGN KEY(partita_iva) REFERENCES aziende(partita_iva);
+
+
+ALTER TABLE versamenti ADD CF_dipendenti CHAR(16);
+
+ALTER TABLE versamenti 
+ADD FOREIGN KEY(CF_dipendenti ) REFERENCES dipendenti(CF);
+
+
+--aziende
+ 
+INSERT INTO aziende (partita_iva, denominazione, settore, indirizzo, citta, regione) 
+VALUES ('12345678901', 'Tech Innovators', 'Informatica', 'Via Roma 10', 'Milano', 'Lombardia');
+
+INSERT INTO aziende (partita_iva, denominazione, settore, indirizzo, citta, regione) 
+VALUES ('23456789012', 'Green Solutions', 'Energia Rinnovabile', 'Via Verdi 15', 'Torino', 'Piemonte');
+
+INSERT INTO aziende (partita_iva, denominazione, settore, indirizzo, citta, regione) 
+VALUES ('34567890123', 'Food Excellence', 'Alimentare', 'Corso Italia 20', 'Napoli', 'Campania');
+
+INSERT INTO aziende (partita_iva, denominazione, settore, indirizzo, citta, regione) 
+VALUES ('45678901234', 'Auto Future', 'Automobilistico', 'Via Ferrari 5', 'Bologna', 'Emilia-Romagna');
+
+INSERT INTO aziende (partita_iva, denominazione, settore, indirizzo, citta, regione) 
+VALUES ('56789012345', 'MedCare', 'Sanità', 'Piazza Duomo 7', 'Firenze', 'Toscana');
+
+--dipendenti
+
+INSERT INTO dipendenti (CF, nome, cognome, data_nascita, professione, numero_familiari, totale_trattenute, reddito_anno_lordo, partita_iva) 
+VALUES ('ABCDEF12G34H567I', 'Marco', 'Rossi', '1985-06-15', 'Ingegnere', 2, 3000.50, 40000.00, '12345678901');
+
+INSERT INTO dipendenti (CF, nome, cognome, data_nascita, professione, numero_familiari, totale_trattenute, reddito_anno_lordo, partita_iva) 
+VALUES ('LMNOPQ34R56S789T', 'Giulia', 'Bianchi', '1990-04-22', 'Biologa', 1, 2500.75, 38000.00, '23456789012');
+
+INSERT INTO dipendenti (CF, nome, cognome, data_nascita, professione, numero_familiari, totale_trattenute, reddito_anno_lordo, partita_iva) 
+VALUES ('UVWXYZ56A78B901C', 'Antonio', 'Esposito', '1982-12-10', 'Chef', 3, 4000.00, 50000.00, '34567890123');
+
+INSERT INTO dipendenti (CF, nome, cognome, data_nascita, professione, numero_familiari, totale_trattenute, reddito_anno_lordo, partita_iva) 
+VALUES ('DEFGHI78C90D123E', 'Luca', 'Verdi', '1975-08-30', 'Meccanico', 4, 3500.25, 42000.00, '45678901234');
+
+INSERT INTO dipendenti (CF, nome, cognome, data_nascita, professione, numero_familiari, totale_trattenute, reddito_anno_lordo, partita_iva) 
+VALUES ('HIJKLM90E12F345G', 'Sara', 'Neri', '1995-02-14', 'Infermiera', 0, 2000.00, 36000.00, '56789012345');
+
+--versamenti
+
+INSERT INTO versamenti (codice, giorno_versamento, mese_versamento, anno_versamento, importo_versamento, partita_iva, CF_dipendenti) 
+VALUES ('VERS001', 5, 3, 2025, 1500.50, '12345678901', 'ABCDEF12G34H567I');
+
+INSERT INTO versamenti (codice, giorno_versamento, mese_versamento, anno_versamento, importo_versamento, partita_iva, CF_dipendenti) 
+VALUES ('VERS002', 10, 4, 2025, 2000.75, '23456789012', 'LMNOPQ34R56S789T');
+
+INSERT INTO versamenti (codice, giorno_versamento, mese_versamento, anno_versamento, importo_versamento, partita_iva, CF_dipendenti) 
+VALUES ('VERS003', 15, 5, 2025, 1800.00, '34567890123', 'UVWXYZ56A78B901C');
+
+INSERT INTO versamenti (codice, giorno_versamento, mese_versamento, anno_versamento, importo_versamento, partita_iva, CF_dipendenti) 
+VALUES ('VERS004', 20, 6, 2025, 2200.25, '45678901234', 'DEFGHI78C90D123E');
+
+INSERT INTO versamenti (codice, giorno_versamento, mese_versamento, anno_versamento, importo_versamento, partita_iva, CF_dipendenti) 
+VALUES ('VERS005', 25, 7, 2025, 2500.00, '56789012345', 'HIJKLM90E12F345G');
+
+
+
+--nuovi dipendenti 
+
+INSERT INTO dipendenti (CF, nome, cognome, data_nascita, professione, numero_familiari, totale_trattenute, reddito_anno_lordo, partita_iva) 
+VALUES ('XYZABC12D34E567F', 'Andrea', 'Galli', '1988-09-12', 'Programmatore', 1, 3200.00, 45000.00, '12345678901');
+
+INSERT INTO dipendenti (CF, nome, cognome, data_nascita, professione, numero_familiari, totale_trattenute, reddito_anno_lordo, partita_iva) 
+VALUES ('OPQRST34U56V789W', 'Elena', 'Moretti', '1993-11-05', 'Ingegnere Ambientale', 2, 2700.50, 39000.00, '23456789012');
+
+INSERT INTO dipendenti (CF, nome, cognome, data_nascita, professione, numero_familiari, totale_trattenute, reddito_anno_lordo, partita_iva) 
+VALUES ('LMNOPQ56X78Y901Z', 'Giovanni', 'Ricci', '1980-06-25', 'Pasticciere', 3, 4100.75, 51000.00, '34567890123');
+
+INSERT INTO dipendenti (CF, nome, cognome, data_nascita, professione, numero_familiari, totale_trattenute, reddito_anno_lordo, partita_iva) 
+VALUES ('ABCDEF78A90B123C', 'Valentina', 'Russo', '1985-03-14', 'Tecnico Auto', 2, 3600.40, 43000.00, '45678901234');
+
+INSERT INTO dipendenti (CF, nome, cognome, data_nascita, professione, numero_familiari, totale_trattenute, reddito_anno_lordo, partita_iva) 
+VALUES ('GHIJKL90C12D345E', 'Francesca', 'Conti', '1997-07-30', 'Fisioterapista', 1, 2300.25, 37000.00, '56789012345');
+ 
+ --nuovi versamenti
+
+
+ INSERT INTO versamenti (codice, giorno_versamento, mese_versamento, anno_versamento, importo_versamento, partita_iva, CF_dipendenti) 
+VALUES ('VERS006', 12, 8, 2025, 1600.00, '12345678901', 'XYZABC12D34E567F');
+
+INSERT INTO versamenti (codice, giorno_versamento, mese_versamento, anno_versamento, importo_versamento, partita_iva, CF_dipendenti) 
+VALUES ('VERS007', 18, 9, 2025, 2100.25, '23456789012', 'OPQRST34U56V789W');
+
+INSERT INTO versamenti (codice, giorno_versamento, mese_versamento, anno_versamento, importo_versamento, partita_iva, CF_dipendenti) 
+VALUES ('VERS008', 22, 10, 2025, 1900.50, '34567890123', 'LMNOPQ56X78Y901Z');
+
+INSERT INTO versamenti (codice, giorno_versamento, mese_versamento, anno_versamento, importo_versamento, partita_iva, CF_dipendenti) 
+VALUES ('VERS009', 28, 11, 2025, 2300.75, '45678901234', 'ABCDEF78A90B123C');
+
+INSERT INTO versamenti (codice, giorno_versamento, mese_versamento, anno_versamento, importo_versamento, partita_iva, CF_dipendenti) 
+VALUES ('VERS010', 5, 12, 2025, 2700.00, '56789012345', 'GHIJKL90C12D345E');
+
+INSERT INTO versamenti (codice, giorno_versamento, mese_versamento, anno_versamento, importo_versamento, partita_iva, CF_dipendenti) 
+VALUES ('VERS011', 7, 8, 2025, 1550.25, '12345678901', 'ABCDEF12G34H567I');
+
+INSERT INTO versamenti (codice, giorno_versamento, mese_versamento, anno_versamento, importo_versamento, partita_iva, CF_dipendenti) 
+VALUES ('VERS012', 14, 9, 2025, 2050.75, '23456789012', 'LMNOPQ34R56S789T');
+
+INSERT INTO versamenti (codice, giorno_versamento, mese_versamento, anno_versamento, importo_versamento, partita_iva, CF_dipendenti) 
+VALUES ('VERS013', 21, 10, 2025, 1850.00, '34567890123', 'UVWXYZ56A78B901C');
+
+INSERT INTO versamenti (codice, giorno_versamento, mese_versamento, anno_versamento, importo_versamento, partita_iva, CF_dipendenti) 
+VALUES ('VERS014', 27, 11, 2025, 2250.50, '45678901234', 'DEFGHI78C90D123E');
+
+INSERT INTO versamenti (codice, giorno_versamento, mese_versamento, anno_versamento, importo_versamento, partita_iva, CF_dipendenti) 
+VALUES ('VERS015', 3, 12, 2025, 2600.00, '56789012345', 'HIJKLM90E12F345G');
